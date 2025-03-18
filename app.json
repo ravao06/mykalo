@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "mykalo",
-    "slug": "ketrika",
+    "slug": "dfs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -27,12 +27,12 @@
         "origin": false
       },
       "eas": {
-        "projectId": "4e5288f4-fc26-4598-bf37-4156eb120a29"
+        "projectId": "80f3e982-d050-46cf-b33c-1c0528bb0cb0"
       }
     },
     "android": {
       "package": "com.thony0666.mykalo"
     },
-    "owner": "thony666"
+    "owner": "jax666"
   }
 }
