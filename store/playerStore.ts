@@ -31,6 +31,7 @@ interface PlayerState {
   toggleShuffle: () => void;
   toggleRepeat: () => void;
   updatePlaybackStatus: (status: Audio.PlaybackStatus) => void;
+  seekToPosition: (position: number) => void; // Ajoutez cette ligne
 }
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
@@ -45,7 +46,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   playbackDuration: 0,
 
   setSongs: (songs) => set({ songs }),
-  
+
   setCurrentSong: (song) => set({ currentSong: song }),
 
   playSound: async (song) => {
@@ -175,6 +176,14 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
       } else if (repeatMode === 'all') {
         get().playNext();
       }
+    }
+  },
+
+  seekToPosition: (position: number) => {
+    const { sound } = get();
+    if (sound) {
+      sound.setPositionAsync(position); // Met à jour la position de lecture
+      set({ playbackPosition: position }); // Met à jour l'état du store
     }
   }
 }));

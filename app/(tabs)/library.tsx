@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Platform,
+  TextInput,
+} from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { usePlayerStore } from '@/store/playerStore';
 import { Play, Pause } from 'lucide-react-native';
 
 export default function Library() {
   const [permission, setPermission] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState(''); // État pour la recherche
   const { songs, setSongs, currentSong, isPlaying, playSound, pauseSound } = usePlayerStore();
+
+  // Filtrer les chansons en fonction de la recherche
+  const filteredSongs = songs.filter((song) =>
+    song.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     (async () => {
@@ -19,12 +33,12 @@ export default function Library() {
             mediaType: 'audio',
           });
           
-          const formattedSongs = media.assets.map(asset => ({
+          const formattedSongs = media.assets.map((asset) => ({
             id: asset.id,
             title: asset.filename.replace(/\.[^/.]+$/, ''),
             artist: 'Unknown Artist',
             uri: asset.uri,
-            duration: asset.duration * 1000, // Convert to milliseconds
+            duration: asset.duration * 1000, // Convertir en millisecondes
           }));
           
           setSongs(formattedSongs);
@@ -33,11 +47,11 @@ export default function Library() {
     })();
   }, []);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }:any) => (
     <TouchableOpacity
       style={[
         styles.songItem,
-        currentSong?.id === item.id && styles.currentSong
+        currentSong?.id === item.id && styles.currentSong,
       ]}
       onPress={() => {
         if (currentSong?.id === item.id && isPlaying) {
@@ -86,10 +100,20 @@ export default function Library() {
 
   return (
     <View style={styles.container}>
+      {/* Barre de recherche */}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search by title..."
+        placeholderTextColor="#888"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
+
+      {/* Liste des chansons filtrées */}
       <FlatList
-        data={songs}
+        data={filteredSongs}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
       />
     </View>
@@ -100,6 +124,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121212',
+  },
+  searchInput: {
+    backgroundColor: '#1a1a1a',
+    color: '#fff',
+    padding: 10,
+    borderRadius: 8,
+    margin: 16,
   },
   list: {
     padding: 16,

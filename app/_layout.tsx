@@ -1,21 +1,17 @@
-import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useFrameworkReady } from '@/hooks/useFrameworkReady';
-import MusicNotification from '@/components/MusicNotification';
+import { View } from 'react-native';
 
-export default function RootLayout() {
-  useFrameworkReady();
-
+export default function Layout() {
   return (
     <>
+    <View style={{ flex: 1, paddingTop: 30 }}>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="+not-found" />
-      <MusicNotification />
+        <Stack.Screen name="index" />
+        {/* <Stack.Screen name="other-screen" /> */}
       </Stack>
-      <StatusBar style="auto" />
-
-      {/* Intégration de MusicNotification */}
-    </>
+    </View>
+    <StatusBar style="auto" />
+  </>
   );
 }

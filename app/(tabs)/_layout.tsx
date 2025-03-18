@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Play, ListMusic, Settings } from 'lucide-react-native';
+import { ListMusic,Play, Settings, FolderPlus } from 'lucide-react-native'; // Importer l'icône FolderPlus
 
 export default function TabLayout() {
   return (
@@ -28,6 +28,15 @@ export default function TabLayout() {
           title: 'Library',
           tabBarIcon: ({ size, color }) => (
             <ListMusic size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="playlist" 
+        options={{
+          title: 'Playlist',
+          tabBarIcon: ({ size, color }) => (
+            <FolderPlus size={size} color={color} /> 
           ),
         }}
       />
